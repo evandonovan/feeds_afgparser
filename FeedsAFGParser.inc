@@ -13,7 +13,7 @@ class FeedsAFGParser extends FeedsSimplePieParser {
       /* Custom field source for enforcing uniqueness. */
       // TODO: determine why this isn't working as GUID.
       'stripped_guid' => array(
-        'name' => t('Stripped GUID'),
+        'name' => t('AFG: Stripped GUID'),
         'description' => t('The GUID stripped of the fp:id which is appended after a hash character (#). This should be used as the GUID. It should be equivalent to fp:detailurl, but that doesn\'t show up in the AFG feed output.'),
       ),
       /* Custom field for latitude from fp:latlong */
@@ -26,24 +26,34 @@ class FeedsAFGParser extends FeedsSimplePieParser {
         'name' => t('AFG: Longitude'),
         'description' => t('The longitude of a volunteer opportunity. (Taken from fp:latlong.)'),
       ),
+      /* Custom field for opportunity start date from fp:startDate */
+      'afg_startDate' => array(
+        'name' => t('AFG: Opportunity Start Date'),
+        'description' => t('The opportunity start date in MM/DD/YYYY format.'),
+      ),
+      /* Custom field for opportunity end date from fp:endDate */
+      'afg_endDate' => array(
+        'name' => t('AFG: Opportunity End Date'),
+        'description' => t('The opportunity end date in MM/DD/YYYY format.'),
+      ),
 
       /* Field sources taken directly from the AFG feed. */
 
       /* Fields that are always present on an AFG feed. */
       'fp_id' => array(
-        'name' => t('AFG Hash (fp:id)'),
+        'name' => t('AFG: Hash (fp:id)'),
         'description' => t('Hashed ID of the opportunity in AFG feed output. Supposedly changes each day.'),
       ),
       'fp_groupid' => array(
-        'name' => t('ID of Merged Opps (fp:groupid)'),
+        'name' => t('AFG: ID of Merged Opps (fp:groupid)'),
         'description' => t('An ID for a deduped set of results.'),
       ),
       'fp_provider' => array(
-        'name' => t('Opportunity Source (fp:provider)'),
+        'name' => t('AFG: Raw Opportunity Source (fp:provider)'),
         'description' => t('Provider of the opportunity. It is a "machine name", so is always lowercase and will not necessarily have spaces.'),
       ),
       'fp_startDate' => array(
-        'name' => t('Opportunity Start Date (fp:startDate)'),
+        'name' => t('AFG: Raw Opportunity Start Date (fp:startDate)'),
         'description' => t('The start date for a volunteer opportunity.'),
       ),
       'fp_endDate' => array(
@@ -51,73 +61,73 @@ class FeedsAFGParser extends FeedsSimplePieParser {
         'description' => t('The end date for a volunteer opportunity.'),
       ),
       'fp_base_url' => array(
-        'name' => t('AFG Hash (fp:base_url)'),
+        'name' => t('AFG: Hash (fp:base_url)'),
         'description' => t('Same as fp:id.'),
       ),
       'fp_xml_url' => array(
-        'name' => t('Opportunity URL with Hash (fp:xml_url)'),
+        'name' => t('AFG: Opportunity URL with Hash (fp:xml_url)'),
         'description' => t('Full URL to opportunity, including hash. (Same as GUID of opportunity.)'),
       ),
       'fp_url_short' => array(
-        'name' => t('Opportunity URL Domain Name (fp:url_short)'),
+        'name' => t('AFG: Opportunity URL Domain Name (fp:url_short)'),
         'description' => t('The domain name of the site where the original opportunity listing is found.'),
       ),
       'fp_latlong' => array(
-        'name' => t('AFG-style Latitude/Longitude (fp:latlong)'),
+        'name' => t('AFG: Raw Latitude/Longitude (fp:latlong)'),
         'description' => t('Latitude, Longitude to seven digits of precision. Needs custom parsing to be mapped.'),
       ),
       'fp_location_name' => array(
-        'name' => t('Opportunity City, State Zip (fp:location_name)'),
+        'name' => t('AFG: Opportunity City, State Zip (fp:location_name)'),
         'description' => t('Opportunity location, with city, state, and zip all in one field.'),
       ),
       'fp_interest_count' => array(
-        'name' => t('Clickthrus? (fp:interest_count)'),
+        'name' => t('AFG: Clickthrus? (fp:interest_count)'),
         'description' => t('Unsure - possibly number of clickthrus.'),
       ),
       'fp_impressions' => array(
-        'name' => t('Number of Pageviews? (fp:impressions)'),
+        'name' => t('AFG: Number of Pageviews? (fp:impressions)'),
         'description' => t('Unsure - possibly number of pageviews, possibly related to an ad campaign.'),
       ),
       'fp_quality_score' => array(
-        'name' => t('AFG Opportunity Rating (fp:quality_score)'),
+        'name' => t('AFG: Opportunity Rating (fp:quality_score)'),
         'description' => t('Internal rating from 0 to 10 of quality of opportunity.'),
       ),
       'fp_virtual' => array(
-        'name' => t('Virtual Opportunity Status (fp:virtual)'),
+        'name' => t('AFG: Virtual Opportunity Status (fp:virtual)'),
         'description' => t('Whether opportunity is virtual - True or False.'),
       ),
       'fp_sponsoringOrganizationName' => array(
-        'name' => t('Sponsoring Organization Name (fp:sponsoringOrganizationName)'),
+        'name' => t('AFG: Sponsoring Organization Name (fp:sponsoringOrganizationName)'),
         'description' => t('Name of organization offering this opportunity.'),
       ),
       'fp_openEnded' => array(
-        'name' => t('Open-Ended Opportunity Status (fp:openEnded)'),
+        'name' => t('AFG: Open-Ended Opportunity Status (fp:openEnded)'),
         'description' => t('Whether opportunity is open-ended (no specific start or end date).'),
       ),
       'fp_startTime' => array(
-        'name' => t('Opportunity Start Time (fp:startTime)'),
+        'name' => t('AFG: Opportunity Start Time (fp:startTime)'),
         'description' => t('Opportunity start time.'),
       ),
       'fp_endTime' => array(
-        'name' => t('Opportunity End Time (fp:endTime)'),
+        'name' => t('AFG: Opportunity End Time (fp:endTime)'),
         'description' => t('Opportunity end time.'),
       ),
       /* Fields that are sometimes present on an AFG feed. */
       'fp_skills' => array(
-        'name' => t('Opportunity Skills (fp:skills)'),
+        'name' => t('AFG: Opportunity Skills (fp:skills)'),
         'description' => t('Skills needed for this opportunity. (Many providers use this as a detailed description.)'),
       ),
       'fp_contactEmail' => array(
-        'name' => t('Email Address for Primary Contact (fp:contactEmail)'),
+        'name' => t('AFG: Email Address for Primary Contact (fp:contactEmail)'),
         'description' => t('The email address for the primary contact for the opportunity.'),
       ),
       'fp_contactPhone' => array(
-        'name' => t('Phone Number for Primary Contact (fp:contactPhone)'),
+        'name' => t('AFG: Phone Number for Primary Contact (fp:contactPhone)'),
         'description' => t('The phone number for the primary contact for the opportunity.'),
       ),
       /* Feeds that are never (so far) present on an AFG feed. */
       'fp_categories' => array(
-        'name' => t('Opportunity Categories (fp:categories)'),
+        'name' => t('AFG: Opportunity Categories (fp:categories)'),
         'description' => t('The categories with which the opportunity is tagged. (Providers won\'t usually offer this.)'),
       ),
       'fp_s' => array(
@@ -129,11 +139,11 @@ class FeedsAFGParser extends FeedsSimplePieParser {
         'description' => t('Unsure.'),
       ),
       'fp_addr1' => array(
-        'name' => t('First Line of Address? (fp:addr1)'),
+        'name' => t('AFG: First Line of Address? (fp:addr1)'),
         'description' => t('First line of address?'),
       ),
       'fp_addrname' => array(
-        'name' => t('Address Name? (fp:addrname)'),
+        'name' => t('AFG: Address Name? (fp:addrname)'),
         'description' => t('Address Name?'),
       ),
       'fp_contactNoneNeeded' => array(
@@ -141,11 +151,11 @@ class FeedsAFGParser extends FeedsSimplePieParser {
         'description' => t('Unsure.'),
       ),
       'fp_contactName' => array(
-        'name' => t('Name of Primary Contact? (fp:contactName)'),
+        'name' => t('AFG: Name of Primary Contact? (fp:contactName)'),
         'description' => t('Name of Primary Contact?'),
       ),
       'fp_detailUrl' => array(
-        'name' => t('Link to Original Opportunity? (fp:detailUrl)'),
+        'name' => t('AFG: Link to Original Opportunity? (fp:detailUrl)'),
         'description' => t('Link to Original Opportunity?'),
       ),
       'fp_audienceAll' => array(
@@ -153,39 +163,39 @@ class FeedsAFGParser extends FeedsSimplePieParser {
         'description' => t('Unsure.'),
       ),
       'fp_audienceAge' => array(
-        'name' => t('Acceptable Ages? (fp:audienceAge)'),
+        'name' => t('AFG: Acceptable Ages? (fp:audienceAge)'),
         'description' => t('What ages of volunteer the opportunity is suited for?'),
       ),
       'fp_minAge' => array(
-        'name' => t('Minimum Age? (fp:minAge)'),
+        'name' => t('AFG: Minimum Age? (fp:minAge)'),
         'description' => t('Minimum age for volunteers?'),
       ),
       'fp_audienceSexRestricted' => array(
-        'name' => t('Volunteers Only of a Particular Gender? (fp:audienceSexRestricted)'),
+        'name' => t('AFG: Volunteers Only of a Particular Gender? (fp:audienceSexRestricted)'),
         'description' => t('Whether volunteers can only be of a particular gender?'),
       ),
       'fp_street1' => array(
-        'name' => t('Street Address Line 1? (fp:street1)'),
+        'name' => t('AFG: Street Address Line 1? (fp:street1)'),
         'description' => t('Street Address Line 1?'),
       ),
       'fp_street2' => array(
-        'name' => t('Street Address Line 2? (fp:street2)'),
+        'name' => t('AFG: Street Address Line 2? (fp:street2)'),
         'description' => t('Street Address Line 2?'),
       ),
       'fp_city' => array(
-        'name' => t('City? (fp:city)'),
+        'name' => t('AFG: City? (fp:city)'),
         'description' => t('City?'),
       ),
       'fp_region' => array(
-        'name' => t('Region/State? (fp:region)'),
+        'name' => t('AFG: Region/State? (fp:region)'),
         'description' => t('Region/State?'),
       ),
       'fp_postalCode' => array(
-        'name' => t('Postal Code/Zipcode? (fp:postalCode)'),
+        'name' => t('AFG: Postal Code/Zipcode? (fp:postalCode)'),
         'description' => t('Postal Code/Zipcode?'),
       ),
       'fp_country' => array(
-        'name' => t('Country? (fp:country)'),
+        'name' => t('AFG: Country? (fp:country)'),
         'description' => t('Country?'),
       ),
     );
@@ -226,6 +236,16 @@ class FeedsAFGParser extends FeedsSimplePieParser {
       $item['afg_lat'] = $points[0];
       // longitude comes second
       $item['afg_long'] = $points[1];
+    }
+    // set the value for the opportunity start date in MM/DD/YYYY format
+    if ($value = $simplepie_item->get_item_tags($afg_namespace, 'startDate')) {
+      $timestamp = strtotime($value[0]['data']);
+      $item['afg_startDate'] = date('m/d/Y', $timestamp);
+    }
+    // set the value for the opportunity end date in MM/DD/YYYY format
+    if ($value = $simplepie_item->get_item_tags($afg_namespace, 'endDate')) {
+      $timestamp = strtotime($value[0]['data']);
+      $item['afg_endDate'] = date('m/d/Y', $timestamp);
     }
   }
 }
