@@ -8,12 +8,27 @@ class FeedsAFGParser extends FeedsSimplePieParser {
    */
   public function getMappingSources() {
     return parent::getMappingSources() + array(
+      /* Field sources with data generated from other fields. */
+
       /* Custom field source for enforcing uniqueness. */
       // TODO: determine why this isn't working as GUID.
       'stripped_guid' => array(
         'name' => t('Stripped GUID'),
         'description' => t('The GUID stripped of the fp:id which is appended after a hash character (#). This should be used as the GUID. It should be equivalent to fp:detailurl, but that doesn\'t show up in the AFG feed output.'),
       ),
+      /* Custom field for latitude from fp:latlong */
+      'afg_lat' => array(
+        'name' => t('AFG: Latitude'),
+        'description' => t('The latitude of a volunteer opportunity. (Taken from fp:latlong.)'),
+      ),
+      /* Custom field for longitude from fp:latlong */
+      'afg_long' => array(
+        'name' => t('AFG: Longitude'),
+        'description' => t('The longitude of a volunteer opportunity. (Taken from fp:latlong.)'),
+      ),
+
+      /* Field sources taken directly from the AFG feed. */
+
       /* Fields that are always present on an AFG feed. */
       'fp_id' => array(
         'name' => t('AFG Hash (fp:id)'),
@@ -202,6 +217,15 @@ class FeedsAFGParser extends FeedsSimplePieParser {
       if($value = $simplepie_item->get_item_tags($afg_namespace, $tagname)) {
         $item['fp_' . $tagname] = $value[0]['data'];
       }
+    }
+    // set the values for the separate latitude and longitude fields
+    if ($value = $simplepie_item->get_item_tags($afg_namespace, 'latlong')) {
+      // split apart the fp:latlong on the comma
+      $points = explode(',', $value[0]['data']);
+      // latitude comes first
+      $item['afg_lat'] = $points[0];
+      // longitude comes second
+      $item['afg_long'] = $points[1];
     }
   }
 }
