@@ -1,0 +1,5 @@
+name = Feeds AllForGood Parser
+description = Parses the Footprint XML tags added to RSS 2.0 in an All for Good feed. (Requires the Simplepie library.)
+package = Feeds
+dependencies[] = feeds
+core = 6.x
