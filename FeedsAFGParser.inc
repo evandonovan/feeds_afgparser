@@ -10,12 +10,18 @@ class FeedsAFGParser extends FeedsSimplePieParser {
     return parent::getMappingSources() + array(
       /* Field sources with data generated from other fields. */
 
-      /* Custom field source for enforcing uniqueness. */
-      // TODO: determine why this isn't working as GUID.
+      /* Custom field sources for enforcing uniqueness. */
+      // stripped_guid is deprecated for use as GUID now, as per conversation with Dan Stryker
+      //  (sometimes feeds will have multiple opportunities at the same URL)
       'stripped_guid' => array(
-        'name' => t('AFG: Stripped GUID'),
-        'description' => t('The GUID stripped of the fp:id which is appended after a hash character (#). This should be used as the GUID. It should be equivalent to fp:detailurl, but that doesn\'t show up in the AFG feed output.'),
+        'name' => t('AFG: Opportunity URL'),
+        'description' => t('The GUID stripped of the fp:id which is appended after a hash character (#). This should be equivalent to fp:detailurl, but that doesn\'t show up in the AFG feed output.'),
       ),
+      'volopp_hash' => array(
+        'name' => t('AFG: Hash of Title, Description, Provider'),
+        'description' => t('The md5 hash of the title, description, and fp:provider for a given feed item. Used as a GUID.'),
+      ),
+
       /* Custom field for latitude from fp:latlong */
       'afg_lat' => array(
         'name' => t('AFG: Latitude'),
@@ -198,6 +204,11 @@ class FeedsAFGParser extends FeedsSimplePieParser {
         'name' => t('AFG: Country? (fp:country)'),
         'description' => t('Country?'),
       ),
+    /* Service and Interest Area Auto-Tagged Value */
+      'volopp_tagged_value' => array(
+        'name' => t('Opportunity Currently Auto-Tagged'),
+        'description' => t('Whether or not the opportunity is currently auto-tagged by cron (always 0 on an import)'),
+      ),
     );
   }
 
@@ -208,7 +219,7 @@ class FeedsAFGParser extends FeedsSimplePieParser {
     // define the AllForGood namespace (needed for SimplePie's get_item_tags() method)
     $afg_namespace = 'http://www.allforgood.org/';
     // define the tags from the AFG feed
-    // TODO: do a custom mapping for latlong that splits it into two (possibly others need custom also)
+    // also have custom fields for latitude/longitude and start/end date, below
     $fp_tags = array('id', 'groupid', 'provider', 'startDate', 'endDate', 'base_url', 'xml_url',
                       'url_short', 'latlong', 'location_name', 'interest_count', 'impressions', 
                       'quality_score', 'virtual', 'sponsoringOrganizationName', 'openEnded', 'startTime',
@@ -247,5 +258,12 @@ class FeedsAFGParser extends FeedsSimplePieParser {
       $timestamp = strtotime($value[0]['data']);
       $item['afg_endDate'] = date('m/d/Y', $timestamp);
     }
+    if (isset($item['title']) && !empty($item['title']) && isset($item['description']) && !empty($item['description']) &&
+        isset($item['fp_provider']) && !empty($item['fp_provider'])) {
+      $item['volopp_hash'] = md5($item['title'] . $item['description'] . $item['fp_provider']);
+      dd($item['volopp_hash']);
+    }
+    // Set the service area tagged value to 0 to avoid "cannot be NULL" warning
+    $item['volopp_tagged_value'] = 0;
   }
 }
